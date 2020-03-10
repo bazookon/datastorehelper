@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "main":"buid/index.js",
+  "types": "build/index.d.ts",
   "scripts": {
     "tsc":"tsc"
   },
