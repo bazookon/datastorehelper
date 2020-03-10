@@ -83,7 +83,7 @@ export class DatastoreService {
     ds.save(
       entity,
       (err) => {
-        return callback(err, err ? null : data, entity?.key);
+        return callback(err, err ? null : data, entity.key);
       }
     );
   }
