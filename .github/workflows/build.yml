@@ -21,6 +21,10 @@ jobs:
     steps:
     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
     - uses: actions/checkout@v2
+      
+    # Install Dependencies  
+    - name: NPM or Yarn install with caching
+      uses: bahmutov/npm-install@v1.1.0
 
     - name: Typescript compiler
       uses: iCrawl/action-tsc@v1
