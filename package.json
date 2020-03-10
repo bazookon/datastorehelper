@@ -2,6 +2,7 @@
   "name": "datastorehelper",
   "version": "1.0.0",
   "description": "",
+  "main":"buid/index.js",
   "scripts": {
     "tsc":"tsc"
   },
