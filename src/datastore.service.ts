@@ -1,5 +1,6 @@
 import { Datastore, Transaction } from "@google-cloud/datastore";
 import { AesEncryptDecrypt } from './aes.service';
+import { entity } from "@google-cloud/datastore/build/src/entity";
 export const ds: Datastore = new Datastore({ projectId: 'vendeme' });
 export class DatastoreService {
 
@@ -12,7 +13,7 @@ export class DatastoreService {
     const results: any = [];
     Object.keys(obj).forEach((value) => {
 
-      if (obj[value] === undefined || value == 'kind' || value == 'nonIndexed') {
+      if (obj[value] === undefined || value == 'kind' || value == 'nonIndexed' || value == 'parent') {
         return;
       }
       results.push({
@@ -70,20 +71,36 @@ export class DatastoreService {
 
   newCreate(data: any, callback: any, id?: any) {
     delete data.urlsafe;
-    let key;
+    let key = [];
+
+
+    let keyParent: entity.Key = data.parent;
+
+    //Add prent if exists
+    if (keyParent) {
+      keyParent.path.forEach((keyItem: any) => {
+        let keyPath: any = Number(keyItem);
+        if (Number.isNaN(keyPath))
+          keyPath = keyItem
+        key.push(keyPath);
+      })
+    }
+
+    //Add KIND
+    key.push(data.kind);
+
+    //Add id if exists
     if (id != null) {
-      key = ds.key([data.kind, id]);
-    } else {
-      key = ds.key(data.kind);
+      key.push(id);
     }
     const entity = {
-      key: key,
+      key: ds.key(key),
       data: this.toDatastore(data, data.nonIndexed)
     };
     ds.save(
       entity,
       (err) => {
-        return callback(err, err ? null : data, entity.key);
+        return callback(err, err ? null : data, entity?.key);
       }
     );
   }
@@ -161,5 +178,7 @@ export class DatastoreService {
       transaction.rollback();
     }
   }
+
+
 
 }

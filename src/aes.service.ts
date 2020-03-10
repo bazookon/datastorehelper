@@ -5,9 +5,9 @@ export class AesEncryptDecrypt {
 
   constructor(
     private key: string,
-    private ivString?:string
+    private ivString?: string
   ) {
-    
+
   }
 
 
