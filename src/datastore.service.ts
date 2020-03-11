@@ -6,18 +6,13 @@ import { prefDatasotore } from ".";
 export class DatastoreService {
   public ds!: Datastore;
   public aesService!: AesEncryptDecrypt
-  
+
   constructor() {
     //Read Configuration
-    fs.readFile('datastore.json',(err,data)=>{
-      if(err) throw new Error('Must init library with init()');
-      let pref:prefDatasotore = JSON.parse(data.toString());
-      this.ds = new Datastore({projectId:pref.projectId})
-      this.aesService = new AesEncryptDecrypt(pref.key,pref.iv);
-    });
-
-
-   }
+    let pref: prefDatasotore = JSON.parse(fs.readFileSync('datastore.json').toString());
+    this.ds = new Datastore({ projectId: pref.projectId })
+    this.aesService = new AesEncryptDecrypt(pref.key, pref.iv);
+  }
 
   toDatastore(obj: any, nonIndexed: any) {
     nonIndexed = nonIndexed || [];
