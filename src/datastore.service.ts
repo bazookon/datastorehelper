@@ -1,12 +1,23 @@
 import { Datastore, Transaction } from "@google-cloud/datastore";
 import { AesEncryptDecrypt } from './aes.service';
 import { entity } from "@google-cloud/datastore/build/src/entity";
-export const ds: Datastore = new Datastore({ projectId: 'vendeme' });
+import fs from 'fs';
+import { prefDatasotore } from ".";
 export class DatastoreService {
+  public ds!: Datastore;
+  public aesService!: AesEncryptDecrypt
+  
+  constructor() {
+    //Read Configuration
+    fs.readFile('pref.json',(err,data)=>{
+      if(err) throw new Error('Must init library with init()');
+      let pref:prefDatasotore = JSON.parse(data.toString());
+      this.ds = new Datastore({projectId:pref.projectId})
+      this.aesService = new AesEncryptDecrypt(pref.key,pref.iv);
+    });
 
-  constructor(
-    public aesService: AesEncryptDecrypt
-  ) { }
+
+   }
 
   toDatastore(obj: any, nonIndexed: any) {
     nonIndexed = nonIndexed || [];
@@ -27,7 +38,7 @@ export class DatastoreService {
   }
 
   async fromDatastore(obj: any) {
-    obj.urlsafe = await ds.keyToLegacyUrlSafe(obj[ds.KEY]);
+    obj.urlsafe = await this.ds.keyToLegacyUrlSafe(obj[this.ds.KEY]);
     obj.urlsafe = this.aesService.encrypt(obj.urlsafe[0]);
     return obj;
   }
@@ -36,13 +47,13 @@ export class DatastoreService {
   //Especial Queries
 
   filterByField(kind: string, field: any, valuefield: any, callback: any) {
-    const query = ds.createQuery([kind]).filter(field, '=', valuefield);
-    ds.runQuery(query, (err: any, entity: any) => {
+    const query = this.ds.createQuery([kind]).filter(field, '=', valuefield);
+    this.ds.runQuery(query, (err: any, entity: any) => {
       if (err) {
         return callback(err);
       }
       if (entity.length != 0) {
-        return callback(null, entity, entity[0][ds.KEY]);
+        return callback(null, entity, entity[0][this.ds.KEY]);
       } else {
         return callback(null, entity);
       }
@@ -52,7 +63,7 @@ export class DatastoreService {
 
   resolveKey(key: any) {
     return new Promise((resolve, reject) => {
-      ds.get(key, (err: any, data: any) => {
+      this.ds.get(key, (err: any, data: any) => {
         if (err) return reject(err);
         resolve(data);
       })
@@ -60,9 +71,9 @@ export class DatastoreService {
   }
 
   async asyncFilterByField(entity: any, field: any, valuefield: any) {
-    const query = ds.createQuery([entity.kind]).filter(field, '=', valuefield);
+    const query = this.ds.createQuery([entity.kind]).filter(field, '=', valuefield);
     return new Promise((resolve, reject) => {
-      ds.runQuery(query, (error: any, entityResult: any) => {
+      this.ds.runQuery(query, (error: any, entityResult: any) => {
         if (error) return reject(error);
         resolve(entityResult);
       })
@@ -94,13 +105,13 @@ export class DatastoreService {
       key.push(id);
     }
     const entity = {
-      key: ds.key(key),
+      key: this.ds.key(key),
       data: this.toDatastore(data, data.nonIndexed)
     };
-    ds.save(
+    this.ds.save(
       entity,
       (err) => {
-        return callback(err, err ? null : data, entity?.key);
+        return callback(err, err ? null : data, entity.key);
       }
     );
   }
@@ -108,15 +119,15 @@ export class DatastoreService {
   newUpdate(id: any, data: any, callback: any) {
     delete data.urlsafe;
     let decrypt = this.aesService.decrypt(id)
-    const key = ds.keyFromLegacyUrlsafe(decrypt);
+    const key = this.ds.keyFromLegacyUrlsafe(decrypt);
     const entity = {
       key: key,
       data: this.toDatastore(data, data.nonIndexed),
     };
-    ds.update(
+    this.ds.update(
       entity,
       (err) => {
-        data.key = ds.keyToLegacyUrlSafe(entity.key);
+        data.key = this.ds.keyToLegacyUrlSafe(entity.key);
         return callback(err, err ? null : data);
       }
     );
@@ -124,16 +135,16 @@ export class DatastoreService {
 
   newDelete(id: string, callback: any) {
     let decrypt = this.aesService.decrypt(id);
-    const key = ds.keyFromLegacyUrlsafe(decrypt);
-    ds.delete(key, (err) => {
+    const key = this.ds.keyFromLegacyUrlsafe(decrypt);
+    this.ds.delete(key, (err) => {
       return callback(err, err ? null : "Deleted")
     });
   }
 
   newRead(id: any, callback: any) {
     let decrypt = this.aesService.decrypt(id);
-    const key = ds.keyFromLegacyUrlsafe(decrypt);
-    ds.get(key, (err, entity) => {
+    const key = this.ds.keyFromLegacyUrlsafe(decrypt);
+    this.ds.get(key, (err, entity) => {
       if (err) {
         return callback(err);
       }
@@ -144,8 +155,8 @@ export class DatastoreService {
   }
 
   newList(kind: string, limit: number, callback: any) {
-    const query = ds.createQuery([kind]).limit(limit).order('name');
-    ds.runQuery(query, (err, entities: any) => {
+    const query = this.ds.createQuery([kind]).limit(limit).order('name');
+    this.ds.runQuery(query, (err, entities: any) => {
       if (err) {
         return callback(err);
       }
@@ -156,7 +167,7 @@ export class DatastoreService {
   }
 
   async newCreateTransaction(entities: any) {
-    const transaction = ds.transaction();
+    const transaction = this.ds.transaction();
     try {
       await transaction.run();
       transaction.save(entities);
@@ -168,7 +179,7 @@ export class DatastoreService {
   }
 
   async newDeleteTransaction(entities: any) {
-    const transaction = ds.transaction();
+    const transaction = this.ds.transaction();
     try {
       await transaction.run();
       transaction.delete(entities);
