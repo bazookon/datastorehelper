@@ -9,7 +9,7 @@ export class DatastoreService {
   
   constructor() {
     //Read Configuration
-    fs.readFile('pref.json',(err,data)=>{
+    fs.readFile('datastore.json',(err,data)=>{
       if(err) throw new Error('Must init library with init()');
       let pref:prefDatasotore = JSON.parse(data.toString());
       this.ds = new Datastore({projectId:pref.projectId})

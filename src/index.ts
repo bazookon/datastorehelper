@@ -21,7 +21,7 @@ export function init({ key, iv, projectId }: { key: string, iv: string, projectI
   });
 
   if (result)
-    fs.writeFile('pref.json', JSON.stringify(pref), (err) => {
+    fs.writeFile('datastore.json', JSON.stringify(pref), (err) => {
       if (err) throw err;
       console.log('Data written to file');
     });

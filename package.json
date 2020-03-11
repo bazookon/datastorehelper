@@ -1,12 +1,12 @@
 {
   "name": "datastorehelper",
-  "version": "1.0.4",
+  "version": "1.1.1",
   "description": "",
-  "main": "buid/index.js",
+  "main": "build/index.js",
   "types": "build/index.d.ts",
   "scripts": {
     "tsc": "tsc",
-    "test": "mocha -r ts-node/register tests/*.spec.ts"
+    "test": "mocha -r ts-node/register src/tests/*.spec.ts"
   },
   "repository": {
     "type": "git",
@@ -17,6 +17,9 @@
   "bugs": {
     "url": "https://github.com/bazookon/datastorehelper/issues"
   },
+  "files": [
+    "build"
+  ],
   "homepage": "https://github.com/bazookon/datastorehelper#readme",
   "dependencies": {
     "@google-cloud/datastore": "^5.0.6",

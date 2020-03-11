@@ -1,4 +1,4 @@
-import { init, DatastoreService } from '../src/index';
+import { init, DatastoreService } from '../index';
 import { expect } from 'chai';
 import 'mocha';
 
