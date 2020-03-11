@@ -24,7 +24,7 @@ export class DatastoreService {
     const results: any = [];
     Object.keys(obj).forEach((value) => {
 
-      if (obj[value] === undefined || value == 'kind' || value == 'nonIndexed' || value == 'parent') {
+      if (obj[value] === undefined || value == 'kind' || value == 'nonIndexed' || value == 'parent' || value == 'aesService' || value == 'ds') {
         return;
       }
       results.push({
