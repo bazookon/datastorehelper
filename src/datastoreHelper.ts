@@ -23,11 +23,7 @@ export class DatastoreHelper extends DatastoreService {
     return entity;
   }
 
-  public async keyToUrlSafeEncrypted(key:entity.Key){
-    return this.keyToUrlSafeService(key);
-  }
-
-
+  
   public insert(entity: any, id?: string) {
     return new Promise<InsertResult>((resolve, reject) => {
       this.newCreate(entity, (err: any, entityResult: any, key: entity.Key) => {
