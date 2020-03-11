@@ -39,6 +39,11 @@ export class DatastoreService {
   }
 
 
+  async keyToUrlSafeService(key:entity.Key){
+     let resolve = await this.ds.keyToLegacyUrlSafe(key);
+     return this.aesService.encrypt(resolve[0]);
+  }
+
   //Especial Queries
 
   filterByField(kind: string, field: any, valuefield: any, callback: any) {

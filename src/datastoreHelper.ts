@@ -23,9 +23,8 @@ export class DatastoreHelper extends DatastoreService {
     return entity;
   }
 
-  public async keyToUrlSafe(key:entity.Key){
-    let urlSafe = await this.ds.keyToLegacyUrlSafe(key);
-    return this.aesService.encrypt(urlSafe);
+  public async keyToUrlSafeEncrypted(key:entity.Key){
+    return this.keyToUrlSafeService(key);
   }
 
 
