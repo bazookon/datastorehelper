@@ -13,6 +13,22 @@ export interface InsertResult {
 
 export class DatastoreHelper extends DatastoreService {
 
+
+  public toFirebase(entity: any) {
+    delete entity.ds;
+    delete entity.aesService;
+    delete entity.parent;
+    delete entity.nonIndexed;
+    delete entity.kind;
+    return entity;
+  }
+
+  public async keyToUrlSafe(key:entity.Key){
+    let urlSafe = await this.ds.keyToLegacyUrlSafe(key);
+    return this.aesService.encrypt(urlSafe);
+  }
+
+
   public insert(entity: any, id?: string) {
     return new Promise<InsertResult>((resolve, reject) => {
       this.newCreate(entity, (err: any, entityResult: any, key: entity.Key) => {
