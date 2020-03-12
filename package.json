@@ -1,11 +1,11 @@
 {
   "name": "datastorehelper",
-  "version": "1.1.8",
+  "version": "1.1.9",
   "description": "",
   "main": "build/index.js",
   "types": "build/index.d.ts",
   "scripts": {
-    "deploy":"rm ./build -r && tsc && npm publish",
+    "deploy": "rm ./build -r && tsc && npm publish",
     "tsc": "tsc",
     "test": "mocha -r ts-node/register src/tests/*.spec.ts"
   },

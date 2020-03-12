@@ -44,6 +44,10 @@ export class DatastoreService {
      return this.aesService.encrypt(resolve[0]);
   }
 
+ UrlSafeToKeyService(urlsafe:string){
+    return this.ds.keyFromLegacyUrlsafe(this.aesService.decrypt(urlsafe));
+ }
+
   //Especial Queries
 
   filterByField(kind: string, field: any, valuefield: any, callback: any) {
