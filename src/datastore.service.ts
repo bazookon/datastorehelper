@@ -33,8 +33,7 @@ export class DatastoreService {
   }
 
   async fromDatastore(obj: any) {
-    obj.urlsafe = await this.ds.keyToLegacyUrlSafe(obj[this.ds.KEY]);
-    obj.urlsafe = this.aesService.encrypt(obj.urlsafe[0]);
+    obj.urlsafe = await this.keyToUrlSafeService(obj[this.ds.KEY]);
     return obj;
   }
 
@@ -122,10 +121,8 @@ export class DatastoreService {
 
   newUpdate(id: any, data: any, callback: any) {
     delete data.urlsafe;
-    let decrypt = this.aesService.decrypt(id)
-    const key = this.ds.keyFromLegacyUrlsafe(decrypt);
     const entity = {
-      key: key,
+      key: this.UrlSafeToKeyService(id),
       data: this.toDatastore(data, data.nonIndexed),
     };
     this.ds.update(
@@ -138,17 +135,13 @@ export class DatastoreService {
   }
 
   newDelete(id: string, callback: any) {
-    let decrypt = this.aesService.decrypt(id);
-    const key = this.ds.keyFromLegacyUrlsafe(decrypt);
-    this.ds.delete(key, (err) => {
+    this.ds.delete(this.UrlSafeToKeyService(id), (err) => {
       return callback(err, err ? null : "Deleted")
     });
   }
 
   newRead(id: any, callback: any) {
-    let decrypt = this.aesService.decrypt(id);
-    const key = this.ds.keyFromLegacyUrlsafe(decrypt);
-    this.ds.get(key, (err, entity) => {
+    this.ds.get(this.UrlSafeToKeyService(id), (err, entity) => {
       if (err) {
         return callback(err);
       }
