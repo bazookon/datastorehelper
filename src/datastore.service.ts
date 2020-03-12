@@ -151,10 +151,9 @@ export class DatastoreService {
     });
   }
 
-  newList(kind: string, limit: number,callback: any,ancestor?:entity.Key) {
-    const query = ancestor != null || ancestor != undefined ?
-    this.ds.createQuery([kind]).limit(limit).order('name').hasAncestor(ancestor) :
-    this.ds.createQuery([kind]).limit(limit).order('name');
+  newList(kind: string, limit: number,callback: any,ancestor?:any) {
+    let query;
+    ancestor ? query = this.ds.createQuery([kind]).limit(limit).order('name') :  query = this.ds.createQuery([kind]).limit(limit).hasAncestor(ancestor);
     this.ds.runQuery(query, (err, entities: any) => {
       if (err) {
         return callback(err);
