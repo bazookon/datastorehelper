@@ -15,12 +15,19 @@ export class DatastoreHelper extends DatastoreService {
 
 
   public toFirebase(entity: any) {
-    delete entity.ds;
-    delete entity.aesService;
-    delete entity.parent;
-    delete entity.nonIndexed;
-    delete entity.kind;
-    return entity;
+    let firebaseEntity = Object.assign({},entity);
+    delete firebaseEntity.ds;
+    delete firebaseEntity.aesService;
+    delete firebaseEntity.parent;
+    delete firebaseEntity.nonIndexed;
+    delete firebaseEntity.kind;
+    return firebaseEntity;
+  }
+
+
+
+  public key(obj:any):entity.Key{
+    return obj[this.ds.KEY];
   }
 
   

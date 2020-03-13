@@ -14,6 +14,7 @@ export class DatastoreService {
     this.aesService = new AesEncryptDecrypt(pref.key, pref.iv);
   }
 
+
   toDatastore(obj: any, nonIndexed: any) {
     nonIndexed = nonIndexed || [];
     const results: any = [];
