@@ -5,8 +5,6 @@ export interface DatastoreInterface {
   nonIndexed: string[];
   kind: string;
   parent?: entity.Key;
-
-  constructor(parent?: entity.Key):void;
 }
 export interface InsertResult {
   entity: any;
