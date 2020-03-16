@@ -74,8 +74,10 @@ export class DatastoreService {
     })
   }
 
-  async asyncFilterByField(entity: any, field: any, valuefield: any) {
-    const query = this.ds.createQuery([entity.kind]).filter(field, '=', valuefield);
+  async asyncFilterByField(entity: any, field: any, valuefield: any,field2?:any,valuefield2?:any) {
+    let query:any;
+    field2 == undefined || valuefield2 == undefined ? query = this.ds.createQuery([entity.kind]).filter(field, '=', valuefield) : query = this.ds.createQuery([entity.kind]).filter(field,'=',valuefield).filter(field2,'=',valuefield2);
+    // let query = this.ds.createQuery([entity.kind]).filter(field, '=', valuefield);
     return new Promise((resolve, reject) => {
       this.ds.runQuery(query, (error: any, entityResult: any) => {
         if (error) return reject(error);
