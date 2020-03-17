@@ -74,11 +74,9 @@ export class DatastoreService {
     })
   }
 
-  async asyncFilterByField(entity: any, field: any, valuefield: any,ancestor?:any,key?:entity.Key) {
+  async asyncFilterByField(entity: any, field: any, valuefield: any,ancestor?:any) {
     let query:any;
-    ancestor == undefined || key == undefined ? query = this.ds.createQuery([entity.kind]).filter(field, '=', valuefield) : 
-    key == undefined ? query = this.ds.createQuery([entity.kind]).filter(field,'=',valuefield).hasAncestor(ancestor) :
-    query = this.ds.createQuery([entity.kind]).filter('__key__','>',key);
+    ancestor == undefined ? query = this.ds.createQuery([entity.kind]).filter(field, '=', valuefield) : query = this.ds.createQuery([entity.kind]).filter(field,'=',valuefield).hasAncestor(ancestor);
     // let query = this.ds.createQuery([entity.kind]).filter(field, '=', valuefield);
     return new Promise((resolve, reject) => {
       this.ds.runQuery(query, (error: any, entityResult: any) => {
