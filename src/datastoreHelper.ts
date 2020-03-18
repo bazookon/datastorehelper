@@ -17,6 +17,7 @@ export class DatastoreHelper extends DatastoreService {
   public toFirebase(entity: any) {
     let firebaseEntity = Object.assign({},entity);
     delete firebaseEntity.ds;
+    delete firebaseEntity.namespace;
     delete firebaseEntity.aesService;
     delete firebaseEntity.parent;
     delete firebaseEntity.nonIndexed;
