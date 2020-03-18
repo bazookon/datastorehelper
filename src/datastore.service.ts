@@ -155,9 +155,8 @@ export class DatastoreService {
   }
 
   newList(kind: string, limit: number,callback: any,ancestor?:entity.Key,order?:string) {
-    if(order == undefined || order == null) order = 'name';
     let query;
-    ancestor == undefined ? query = this.ds.createQuery([kind]).limit(limit).order(order) :  query = this.ds.createQuery([kind]).limit(limit).hasAncestor(ancestor);
+    ancestor == undefined ? query = this.ds.createQuery([kind]).limit(limit).order(order == undefined ? 'name' : order) :  query = this.ds.createQuery([kind]).limit(limit).hasAncestor(ancestor);
     this.ds.runQuery(query, (err, entities: any) => {
       if (err) {
         return callback(err);
