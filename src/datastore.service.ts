@@ -157,12 +157,13 @@ export class DatastoreService {
   newList(kind: string, limit: number,callback: any,ancestor?:entity.Key,order?:string) {
     let query;
     ancestor == undefined ? query = this.ds.createQuery([kind]).limit(limit).order(order == undefined ? 'name' : order) :  query = this.ds.createQuery([kind]).limit(limit).hasAncestor(ancestor);
-    this.ds.runQuery(query, (err, entities: any) => {
+    this.ds.runQuery(query,(err, entities: any,nextQuery:any) => {
       if (err) {
         return callback(err);
       }
       Promise.all(entities.map((entity: any) => this.fromDatastore(entity))).then(results => {
-        return callback(null, results);
+        const hasMore = nextQuery.moreResults !== Datastore.NO_MORE_RESULTS ? nextQuery.endCursor : false;
+        return callback(null, results,hasMore);
       })
     });
   }

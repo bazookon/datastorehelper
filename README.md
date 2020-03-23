@@ -119,8 +119,7 @@ let modelInstance: Model = new Model();
 
 #### Novedades 🤘 
 ```
-* Transacciones llamando a modelDatastore.newCreateTransaction(entitiesList);
-//se debe pasar el array de entidades con su key ya resuelta y pasada por modelDatastore.toDatastore(obj,obj.nonIndexed);
+* newList(), Ahora retorna hasMore que son los siguientes datos
 ```
 
 ## Autores ✒️
