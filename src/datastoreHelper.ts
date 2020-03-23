@@ -11,6 +11,11 @@ export interface InsertResult {
   key: entity.Key;
 }
 
+export interface ListResult {
+  entities: any;
+  loadMore: any;
+}
+
 export class DatastoreHelper extends DatastoreService {
 
 
@@ -71,9 +76,10 @@ export class DatastoreHelper extends DatastoreService {
 
   public list(kind: string, limit: number,ancestor?:entity.Key,order?:string) {
     return new Promise<any>((resolve, reject) => {
-      this.newList(kind, limit,(err: any, entities: any) => {
+      this.newList(kind, limit,(err: any, entities: any,hasMore:any) => {
         if (err) return reject(err);
-        resolve(entities);
+        let listResult:ListResult = {entities:entities,loadMore:hasMore};
+        resolve(listResult);
       },ancestor,order)
     });
   }
