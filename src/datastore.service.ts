@@ -154,9 +154,9 @@ export class DatastoreService {
     });
   }
 
-  newList(kind: string, limit: number,callback: any,ancestor?:entity.Key,order?:string) {
+  newList(kind: string, limit: number,callback: any,ancestor?:entity.Key,token?:any,order?:string) {
     let query;
-    ancestor == undefined ? query = this.ds.createQuery([kind]).limit(limit).order(order == undefined ? 'name' : order) :  query = this.ds.createQuery([kind]).limit(limit).hasAncestor(ancestor);
+    ancestor == undefined ? query = this.ds.createQuery([kind]).limit(limit).order(order == undefined ? 'name' : order).start(token) :  query = this.ds.createQuery([kind]).limit(limit).start(token).hasAncestor(ancestor);
     this.ds.runQuery(query,(err, entities: any,nextQuery:any) => {
       if (err) {
         return callback(err);
