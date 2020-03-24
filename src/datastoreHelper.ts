@@ -74,13 +74,12 @@ export class DatastoreHelper extends DatastoreService {
     });
   }
 
-  public list(kind: string, limit: number,ancestor?:entity.Key,token?:string,order?:string) {
+  public list(kind: string, limit: number,ancestor?:entity.Key,order?:string) {
     return new Promise<any>((resolve, reject) => {
-      this.newList(kind, limit,(err: any, entities: any,hasMore:any) => {
+      this.newList(kind, limit,(err: any, entities: any) => {
         if (err) return reject(err);
-        let listResult:ListResult = {entities:entities,loadMore:hasMore};
-        resolve(listResult);
-      },ancestor,token,order)
+        resolve(entities);
+      },ancestor,order)
     });
   }
 

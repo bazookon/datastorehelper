@@ -119,7 +119,7 @@ let modelInstance: Model = new Model();
 
 #### Novedades 🤘 
 ```
-* newList(), Ahora retorna hasMore que son los siguientes datos
+* vuelta atras, sin novedades
 ```
 
 ## Autores ✒️
