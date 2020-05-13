@@ -65,7 +65,7 @@ export class DatastoreService {
     });
   }
 
-  resolveKey(key: any) {
+  resolveKey(key: any):Promise<any> {
     return new Promise((resolve, reject) => {
       this.ds.get(key, (err: any, data: any) => {
         if (err) return reject(err);
