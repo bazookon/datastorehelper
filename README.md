@@ -119,7 +119,7 @@ let modelInstance: Model = new Model();
 
 #### Novedades 🤘 
 ```
-* vuelta atras, sin novedades
+* ResolveKey ahora es de tipo Promise<any>
 ```
 
 ## Autores ✒️
