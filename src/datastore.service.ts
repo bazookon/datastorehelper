@@ -74,7 +74,7 @@ export class DatastoreService {
     })
   }
 
-  async asyncFilterByField(entity: any, field: any, valuefield: any,ancestor?:any) {
+  async asyncFilterByField(entity: any, field: any, valuefield: any,ancestor?:any):Promise<any> {
     let query:any;
     ancestor == undefined ? query = this.ds.createQuery([entity.kind]).filter(field, '=', valuefield) : query = this.ds.createQuery([entity.kind]).filter(field,'=',valuefield).hasAncestor(ancestor);
     // let query = this.ds.createQuery([entity.kind]).filter(field, '=', valuefield);
@@ -143,7 +143,7 @@ export class DatastoreService {
     });
   }
 
-  newRead(id: any, callback: any) {
+  newRead(id: any, callback: any):any {
     this.ds.get(this.UrlSafeToKeyService(id), (err, entity) => {
       if (err) {
         return callback(err);

@@ -119,7 +119,7 @@ let modelInstance: Model = new Model();
 
 #### Novedades 🤘 
 ```
-* ResolveKey ahora es de tipo Promise<any>
+* Ahora los metodos son compatibles y retornar datos que pueden ser asignables al modelo enviado
 ```
 
 ## Autores ✒️

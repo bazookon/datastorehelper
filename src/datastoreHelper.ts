@@ -37,7 +37,7 @@ export class DatastoreHelper extends DatastoreService {
   }
 
   
-  public insert(entity: any, id?: string) {
+  public insert(entity: any, id?: string):Promise<InsertResult> {
     return new Promise<InsertResult>((resolve, reject) => {
       this.newCreate(entity, (err: any, entityResult: any, key: entity.Key) => {
         if (err) return reject(err);
@@ -47,7 +47,7 @@ export class DatastoreHelper extends DatastoreService {
     });
   }
 
-  public update(id: string, entity: any) {
+  public update(id: string, entity: any):Promise<any> {
     return new Promise<any>((resolve, reject) => {
       this.newUpdate(id, entity, (err: any, entityResult: any) => {
         if (err) return reject(err);
@@ -56,7 +56,7 @@ export class DatastoreHelper extends DatastoreService {
     });
   }
 
-  public delete(id: string) {
+  public delete(id: string):Promise<any> {
     return new Promise<any>((resolve, reject) => {
       this.newDelete(id, (err: any, entityResult: any) => {
         if (err) return reject(err);
@@ -65,7 +65,7 @@ export class DatastoreHelper extends DatastoreService {
     });
   }
 
-  public read(id: string) {
+  public read(id: string):Promise<any> {
     return new Promise<any>((resolve, reject) => {
       this.newRead(id, (err: any, entityResult: any) => {
         if (err) return reject(err);
@@ -74,7 +74,7 @@ export class DatastoreHelper extends DatastoreService {
     });
   }
 
-  public list(kind: string, limit: number,ancestor?:entity.Key,order?:string) {
+  public list(kind: string, limit: number,ancestor?:entity.Key,order?:string):Promise<any> {
     return new Promise<any>((resolve, reject) => {
       this.newList(kind, limit,(err: any, entities: any) => {
         if (err) return reject(err);
