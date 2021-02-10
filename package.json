@@ -24,7 +24,7 @@
   "homepage": "https://github.com/bazookon/datastorehelper#readme",
   "dependencies": {
     "@google-cloud/datastore": "^6.3.1",
-    "aes256": "^1.0.4",
+    "aes256": "^1.1.0",
     "nodejs-base64": "^1.0.3"
   },
   "devDependencies": {
